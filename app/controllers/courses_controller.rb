@@ -5,12 +5,6 @@ class CoursesController < ApplicationController
   # GET /courses.json
   def index
     @courses = Course.all
-    
-    if params[:search]
-      @courses = Course.search(params[:search]).order('created_at DESC')
-    else
-      @courses = Course.all.order('created_at DESC')
-    end
   end
 
   # GET /courses/1
@@ -75,13 +69,6 @@ class CoursesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def course_params
-      teacher_id = params.require(:course)[:teacher]
-      if teacher_id
-        teacher = Person.find(teacher_id)
-      else
-        teacher = nil
-      end
-
-      params.require(:course).permit(:title, :code).merge(:teacher => teacher)
+      params.require(:course).permit(:title, :code, :quote, :person_id)
     end
 end

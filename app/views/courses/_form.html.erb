@@ -26,6 +26,11 @@
     <%= f.select :teacher, options_for_select(Person.all.map{|s|[s.to_s, s.id]}) %>
   </div>
 
+    <div class="field">
+        <%= f.label :quote %>
+        <%= f.number_field :quote %>
+    </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>
