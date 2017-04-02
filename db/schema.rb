@@ -12,13 +12,17 @@
 
 ActiveRecord::Schema.define(version: 20170331113520) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "courses", force: :cascade do |t|
     t.string   "title"
     t.string   "code"
+    t.integer  "quote"
     t.integer  "person_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["person_id"], name: "index_courses_on_person_id"
+    t.index ["person_id"], name: "index_courses_on_person_id", using: :btree
   end
 
   create_table "enrollments", force: :cascade do |t|
@@ -26,16 +30,20 @@ ActiveRecord::Schema.define(version: 20170331113520) do
     t.integer  "course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["course_id"], name: "index_enrollments_on_course_id"
-    t.index ["person_id"], name: "index_enrollments_on_person_id"
+    t.index ["course_id"], name: "index_enrollments_on_course_id", using: :btree
+    t.index ["person_id"], name: "index_enrollments_on_person_id", using: :btree
   end
 
   create_table "people", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
+    t.boolean  "is_teacher"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "courses", "people"
+  add_foreign_key "enrollments", "courses"
+  add_foreign_key "enrollments", "people"
 end
